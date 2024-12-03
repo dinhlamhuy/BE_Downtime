@@ -16,7 +16,7 @@ exports.getOwner = async (condition) => {
     const rs = await db.Execute(
       `SELECT * FROM DT_user_manager WHERE ${condition}`
     );
-    console.log(`SELECT * FROM DT_user_manager WHERE ${condition}`);
+    //console.log(`SELECT * FROM DT_user_manager WHERE ${condition}`);
     return rs.recordset[0] || null;
   } catch (e) {
     return null;
@@ -27,7 +27,7 @@ exports.getOwners = async (condition) => {
     const rs = await db.Execute(
       `SELECT * FROM DT_user_manager WHERE ${condition}`
     );
-    console.log(`SELECT * FROM DT_user_manager WHERE ${condition}`);
+    //console.log(`SELECT * FROM DT_user_manager WHERE ${condition}`);
     return rs.recordset || null;
   } catch (e) {
     return null;
@@ -54,7 +54,7 @@ exports.getListStatus = async ({ condition, permission }) => {
       where ${condition}
       GROUP BY  A.id,A.user_name,A.refresh_token,A.create_at,A.name,A.date_of_birdth,A.phone_number,A.factory,A.lean,A.permission,A.token_devices,A.floor,A.position,A.floors`;
 
-    console.log(query);
+    // console.log(query);
 
     const rs = await db.Execute(query);
 
@@ -80,8 +80,8 @@ exports.getCreateReject = async ({
   id_user_mechanic,
 }) => {
   try {
-    console.log(`insert into DT_reject_task (id_task_detail, id_machine, id_user_mechanic, number_reject,
-      date_recive, create_date) VALUES ('${id_task_detail}','${id_machine}','${id_user_mechanic}','1',GETDATE(), GETDATE())`);
+    //console.log(`insert into DT_reject_task (id_task_detail, id_machine, id_user_mechanic, number_reject,
+      //date_recive, create_date) VALUES ('${id_task_detail}','${id_machine}','${id_user_mechanic}','1',GETDATE(), GETDATE())`);
     const rs = await db.Execute(
       `insert into DT_reject_task (id_task_detail, id_machine, id_user_mechanic, number_reject,
         date_recive, create_date) VALUES ('${id_task_detail}','${id_machine}','${id_user_mechanic}','1',GETDATE(), GETDATE())`
@@ -98,9 +98,7 @@ exports.getUpdateReject = async ({
   id_user_mechanic,
 }) => {
   try {
-    console.log(
-      `update DT_reject_task set number_reject='${number_reject}', date_recive=GETDATE() where  id_task_detail ='${id_task_detail}' and  [id_user_mechanic] ='${id_user_mechanic}'`
-    );
+    //console.log(`update DT_reject_task set number_reject='${number_reject}', date_recive=GETDATE() where  id_task_detail ='${id_task_detail}' and  [id_user_mechanic] ='${id_user_mechanic}'`);
     const rs = await db.Execute(
       `update DT_reject_task set number_reject='${number_reject}', date_recive=GETDATE() where  id_task_detail ='${id_task_detail}' and  [id_user_mechanic] ='${id_user_mechanic}'`
     );
@@ -200,34 +198,27 @@ exports.getListStatusMechanic = async ({
 };
 exports.getListmehcanic = async (condition) => {
   try {
-    console.log(` SELECT DT_task_detail.id,id_machine,id_user_request,date_user_request,id_user_mechanic,date_cfm_mechanic,date_mechanic_cfm_onsite,status,remark,other_reason,id_owner_mechanic,date_asign_task,DT_user_manager.name,DT_user_manager.floor,DT_user_manager.floors
-      ,STRING_AGG([info_reason_mm], ', ') AS [info_reason_mm],
-      STRING_AGG([info_reason_en], ', ') AS [info_reason_en], 
-      STRING_AGG([info_reason_vn], ', ') AS [info_reason_vn]
-      FROM DT_task_detail
-      left join DT_user_manager on DT_user_manager.user_name = DT_task_detail.id_user_request
-      LEFT JOIN DT_info_reason ir1 ON ','+DT_task_detail.remark+',' LIKE '%,' + CAST(ir1.id AS VARCHAR) + ',%'
-      WHERE  DT_user_manager.permission = 3 and (DT_task_detail.status=1 or DT_task_detail.status= 3 or DT_task_detail.status= 2 or DT_task_detail.status= 5 ) and DT_task_detail.id_user_mechanic is  null ${condition} 
+    // console.log(` SELECT DT_task_detail.id,id_machine,id_user_request,date_user_request,id_user_mechanic,date_cfm_mechanic,date_mechanic_cfm_onsite,status,remark,other_reason,id_owner_mechanic,date_asign_task,DT_user_manager.name,DT_user_manager.floor,DT_user_manager.floors
+    //   ,STRING_AGG([info_reason_mm], ', ') AS [info_reason_mm],
+    //   STRING_AGG([info_reason_en], ', ') AS [info_reason_en], 
+    //   STRING_AGG([info_reason_vn], ', ') AS [info_reason_vn]
+    //   FROM DT_task_detail
+    //   left join DT_user_manager on DT_user_manager.user_name = DT_task_detail.id_user_request
+    //   LEFT JOIN DT_info_reason ir1 ON ','+DT_task_detail.remark+',' LIKE '%,' + CAST(ir1.id AS VARCHAR) + ',%'
+    //   WHERE  DT_user_manager.permission = 3 and (DT_task_detail.status=1 or DT_task_detail.status= 3 or DT_task_detail.status= 2 or DT_task_detail.status= 5 ) and DT_task_detail.id_user_mechanic is  null ${condition} 
       	 
-      GROUP BY DT_task_detail.id,id_machine,id_user_request,date_user_request,id_user_mechanic,date_cfm_mechanic,date_mechanic_cfm_onsite,status,remark,other_reason,id_owner_mechanic,date_asign_task,DT_user_manager.name,DT_user_manager.floor,DT_user_manager.floors
-      `);
+    //   GROUP BY DT_task_detail.id,id_machine,id_user_request,date_user_request,id_user_mechanic,date_cfm_mechanic,date_mechanic_cfm_onsite,status,remark,other_reason,id_owner_mechanic,date_asign_task,DT_user_manager.name,DT_user_manager.floor,DT_user_manager.floors
+    //   `);
 
     const rs = await db.Execute(
-      `
-      SELECT DT_task_detail.id,id_machine,id_user_request,date_user_request,id_user_mechanic,date_cfm_mechanic,date_mechanic_cfm_onsite,status,remark,other_reason,id_owner_mechanic,date_asign_task,DT_user_manager.name,DT_user_manager.floor,DT_user_manager.floors
-      ,STRING_AGG([info_reason_mm], ', ') AS [info_reason_mm],
-      STRING_AGG([info_reason_en], ', ') AS [info_reason_en], 
-      STRING_AGG([info_reason_vn], ', ') AS [info_reason_vn]
+      ` SELECT DT_task_detail.id,id_machine,id_user_request,date_user_request,id_user_mechanic,date_cfm_mechanic,date_mechanic_cfm_onsite,status,remark,other_reason,id_owner_mechanic,date_asign_task,DT_user_manager.name,DT_user_manager.floor,DT_user_manager.floors
+      ,STRING_AGG([info_reason_mm], ', ') AS [info_reason_mm], STRING_AGG([info_reason_en], ', ') AS [info_reason_en], STRING_AGG([info_reason_vn], ', ') AS [info_reason_vn]
       FROM DT_task_detail
       left join DT_user_manager on DT_user_manager.user_name = DT_task_detail.id_user_request
       LEFT JOIN DT_info_reason ir1 ON ','+DT_task_detail.remark+',' LIKE '%,' + CAST(ir1.id AS VARCHAR) + ',%'
       WHERE  DT_user_manager.permission = 3 and (DT_task_detail.status=1 or DT_task_detail.status= 3 or DT_task_detail.status= 2 or DT_task_detail.status= 5 ) and DT_task_detail.id_user_mechanic is  null ${condition} 
-      	
       GROUP BY DT_task_detail.id,id_machine,id_user_request,date_user_request,id_user_mechanic,date_cfm_mechanic,date_mechanic_cfm_onsite,status,remark,other_reason,id_owner_mechanic,date_asign_task,DT_user_manager.name,DT_user_manager.floor,DT_user_manager.floors
-      
-      `
-    );
-
+      `);
     return rs.recordset || null;
   } catch (error) {
     return null;
@@ -238,8 +229,7 @@ exports.getListOnwermehcanic = async (condition) => {
     const rs = await db.Execute(
       `
       SELECT DT_task_detail.id,id_machine,id_user_request,date_user_request,id_user_mechanic,date_cfm_mechanic,date_mechanic_cfm_onsite,status,remark,id_owner_mechanic,date_asign_task,DT_user_manager.name,DT_user_manager.floor,DT_user_manager.floors
-      ,STRING_AGG([info_reason_mm], ', ') AS [info_reason_mm], 
-      STRING_AGG([info_reason_en], ', ') AS [info_reason_en], 
+      ,STRING_AGG([info_reason_mm], ', ') AS [info_reason_mm], STRING_AGG([info_reason_en], ', ') AS [info_reason_en], 
       STRING_AGG([info_reason_vn], ', ') AS [info_reason_vn], MAX(Onwer.phone_number) phone_number, MAX(Onwer.name) Onwername
       FROM DT_task_detail
       left join DT_user_manager on DT_user_manager.user_name = DT_task_detail.id_user_request
@@ -300,12 +290,11 @@ exports.getTaskhistory = async ({ id_user_mechanic, factory }) => {
           ;WITH ReasonData AS (
     SELECT TD.id, STRING_AGG(info_reason_vn, ', ') AS info_reason_vn, STRING_AGG(info_reason_en, ', ') AS info_reason_en, STRING_AGG(info_reason_mm, ', ') AS info_reason_mm
     FROM DT_task_detail TD LEFT JOIN DT_info_reason ir ON ',' + TD.remark + ',' LIKE '%,' + CAST(ir.id AS VARCHAR) + ',%'
-    WHERE TD.id_user_mechanic ='${id_user_mechanic}' GROUP BY TD.id),
+    WHERE TD.id_user_mechanic ='${id_user_mechanic}'  GROUP BY TD.id),
 SkillData AS (SELECT TD.id, STRING_AGG(info_skill_vn, ', ') AS info_skill_vn, STRING_AGG(info_skill_en, ', ') AS info_skill_en, STRING_AGG(info_skill_mm, ', ') AS info_skill_mm
     FROM DT_task_detail TD LEFT JOIN DT_info_skill is1 ON ',' + TD.skill_cfm + ',' LIKE '%,' + CAST(is1.id AS VARCHAR) + ',%'
-    WHERE TD.id_user_mechanic ='${id_user_mechanic}' GROUP BY TD.id)
-
-SELECT a.id id_task, a.id_machine, a.id_user_request, a.date_user_request, a.id_user_mechanic,MAX(newmachine) newmachine,
+    WHERE TD.id_user_mechanic ='${id_user_mechanic}'  GROUP BY TD.id)
+SELECT TOP(50) a.id id_task, a.id_machine, a.id_user_request, a.date_user_request, a.id_user_mechanic,MAX(newmachine) newmachine,
     b.name AS name_mechanic, a.date_cfm_mechanic, a.date_mechanic_cfm_onsite,
     a.date_mechanic_cfm_finished, a.status, b.floor, a.remark,a.other_reason,
 info_reason_vn,info_reason_en,info_reason_mm,info_skill_mm,info_skill_en,info_skill_vn,
@@ -767,7 +756,7 @@ LEFT JOIN ReasonData RD ON RD.id = a.id
 	c.name order by a.status
 `;
 
-    console.log(query);
+    // console.log(query);
     const rs = await db.Execute(query);
 
     return rs.recordset || null;
@@ -795,7 +784,7 @@ WHERE
       query += ` AND CONVERT(DATE, a.date_asign_task) BETWEEN CONVERT(DATE,'${fromDate}') AND CONVERT(DATE,'${toDate}')`;
     }
 
-    console.log(query);
+    // console.log(query);
     const rs = await db.Execute(query);
 
     return rs.recordset[0] || null;
@@ -859,7 +848,7 @@ AND DATEPART(${newTime}, date_asign_task) = DATEPART(${newTime}, GETDATE())
   GROUP BY Custom_machine_Name, Asset_No,TD.id_machine, REQ.floor,REQ.floors, REQ.line,TD.status,TD.factory,AvGFreCount
     order by Custom_machine_Name, REQ.floor, REQ.line`;
 
-    console.log(query);
+    //console.log(query);
     const rs = await db.Execute(query);
 
     return rs.recordset || null;
@@ -939,7 +928,7 @@ GROUP BY
 	HAVING SUM(CAST(DATEDIFF(SECOND, date_mechanic_cfm_onsite, date_mechanic_cfm_finished) / 60.0 AS FLOAT))  > 0
 	order by SUM(CAST(DATEDIFF(SECOND, date_mechanic_cfm_onsite, date_mechanic_cfm_finished) / 60.0 AS FLOAT))  DESC
 `;
-    console.log(query);
+    //console.log(query);
 
     const rs = await db.Execute(query);
 
@@ -987,7 +976,7 @@ WHERE
   GROUP BY id_machine
   ORDER BY COUNT(1)  DESC;
 `;
-    console.log(query);
+    //console.log(query);
 
     const rs = await db.Execute(query);
 
@@ -1011,8 +1000,8 @@ exports.createDTSupport = async ({
   support_detail,
 }) => {
   try {
-    console.log(`INSERT INTO DT_support ([id_user_owner], [id_user_machine],[factory],[floor],[Line],[Remark],[status],[date_request],[modify_date],[id_task], [name_machine]) 
-      VALUES ('${user_owner}','${user_machine}','${factory}','','${line}',N'${remark}','1',GETDATE(),GETDATE(),'${id_task}', '${name_machine}' )`);
+    //console.log(`INSERT INTO DT_support ([id_user_owner], [id_user_machine],[factory],[floor],[Line],[Remark],[status],[date_request],[modify_date],[id_task], [name_machine]) 
+     // VALUES ('${user_owner}','${user_machine}','${factory}','','${line}',N'${remark}','1',GETDATE(),GETDATE(),'${id_task}', '${name_machine}' )`);
     const rs = await db.Execute(
       `INSERT INTO DT_support ([id_user_owner], [id_user_machine],[factory],[floor],[Line],[Remark],[status],[date_request],[modify_date],[id_task], [name_machine]) 
       VALUES ('${user_owner}','${user_machine}','${factory}','','${line}',N'${remark}','1',GETDATE(),GETDATE(),'${id_task}', '${name_machine}' )`
