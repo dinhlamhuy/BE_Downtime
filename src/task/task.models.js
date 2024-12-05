@@ -209,7 +209,14 @@ exports.getListmehcanic = async (condition) => {
       	 
     //   GROUP BY DT_task_detail.id,id_machine,id_user_request,date_user_request,id_user_mechanic,date_cfm_mechanic,date_mechanic_cfm_onsite,status,remark,other_reason,id_owner_mechanic,date_asign_task,DT_user_manager.name,DT_user_manager.floor,DT_user_manager.floors
     //   `);
-
+    console.log( ` SELECT DT_task_detail.id,id_machine,id_user_request,date_user_request,id_user_mechanic,date_cfm_mechanic,date_mechanic_cfm_onsite,status,remark,other_reason,id_owner_mechanic,date_asign_task,DT_user_manager.name,DT_user_manager.floor,DT_user_manager.floors
+      ,STRING_AGG([info_reason_mm], ', ') AS [info_reason_mm], STRING_AGG([info_reason_en], ', ') AS [info_reason_en], STRING_AGG([info_reason_vn], ', ') AS [info_reason_vn]
+      FROM DT_task_detail
+      left join DT_user_manager on DT_user_manager.user_name = DT_task_detail.id_user_request
+      LEFT JOIN DT_info_reason ir1 ON ','+DT_task_detail.remark+',' LIKE '%,' + CAST(ir1.id AS VARCHAR) + ',%'
+      WHERE  DT_user_manager.permission = 3 and (DT_task_detail.status=1 or DT_task_detail.status= 3 or DT_task_detail.status= 2 or DT_task_detail.status= 5 ) and DT_task_detail.id_user_mechanic is  null ${condition} 
+      GROUP BY DT_task_detail.id,id_machine,id_user_request,date_user_request,id_user_mechanic,date_cfm_mechanic,date_mechanic_cfm_onsite,status,remark,other_reason,id_owner_mechanic,date_asign_task,DT_user_manager.name,DT_user_manager.floor,DT_user_manager.floors
+      `)
     const rs = await db.Execute(
       ` SELECT DT_task_detail.id,id_machine,id_user_request,date_user_request,id_user_mechanic,date_cfm_mechanic,date_mechanic_cfm_onsite,status,remark,other_reason,id_owner_mechanic,date_asign_task,DT_user_manager.name,DT_user_manager.floor,DT_user_manager.floors
       ,STRING_AGG([info_reason_mm], ', ') AS [info_reason_mm], STRING_AGG([info_reason_en], ', ') AS [info_reason_en], STRING_AGG([info_reason_vn], ', ') AS [info_reason_vn]
@@ -219,6 +226,7 @@ exports.getListmehcanic = async (condition) => {
       WHERE  DT_user_manager.permission = 3 and (DT_task_detail.status=1 or DT_task_detail.status= 3 or DT_task_detail.status= 2 or DT_task_detail.status= 5 ) and DT_task_detail.id_user_mechanic is  null ${condition} 
       GROUP BY DT_task_detail.id,id_machine,id_user_request,date_user_request,id_user_mechanic,date_cfm_mechanic,date_mechanic_cfm_onsite,status,remark,other_reason,id_owner_mechanic,date_asign_task,DT_user_manager.name,DT_user_manager.floor,DT_user_manager.floors
       `);
+     
     return rs.recordset || null;
   } catch (error) {
     return null;

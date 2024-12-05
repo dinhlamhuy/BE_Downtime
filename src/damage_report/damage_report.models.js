@@ -26,7 +26,7 @@ exports.getTaskdeletes = async (condition) => {
 };
 exports.getMachi = async (condition) => {
   try {
-    const rs = await db.Execute(`select Asset_No ID_Code, Custom_machine_Name Name_vn, Custom_machine_Name Name_en,Custom_machine_Name Name_mm from [Machine].[Machine].dbo.LYG_Machine_Data where ${condition}`);
+    const rs = await db.Execute(`select Asset_No ID_Code, Custom_machine_Name Name_vn, Custom_machine_Name Name_en,Custom_machine_Name Name_mm from [Machine].[Machine].dbo.LYG_Machine_Data where ${condition} order by Asset_No ASC`);
 
     return rs.recordset[0] || null;
     // return `select * from dt_machine where ${condition}`
@@ -37,7 +37,7 @@ exports.getMachi = async (condition) => {
 exports.getAllMachi = async (condition) => {
   try {
     const rs = await db.Execute(
-      `select  Factory, Asset_No ID_Code, Custom_machine_Name Name_vn, Custom_machine_Name Name_en from [Machine].[Machine].dbo.LYG_Machine_Data where ${condition}`
+      `select  Factory, Asset_No ID_Code, Custom_machine_Name Name_vn, Custom_machine_Name Name_en from [Machine].[Machine].dbo.LYG_Machine_Data where ${condition} order by Asset_No ASC`
     );
     // const rs = await db.Execute(
     //   `select ID, Factory, ID_Code, Lean, Name_vn, Name_en from dt_machine where ${condition}`
@@ -59,7 +59,6 @@ exports.getTaskdelete = async ({
     const rs = await db.Execute(
       `SELECT * FROM DT_task_detail WHERE id_machine  = '${id_machine}'  and factory='${factory}'  and (date_mechanic_cfm_finished is null OR date_cfm_mechanic is null) `
     );
-
     return rs.recordset[0] || null;
   } catch (error) {
     return null;

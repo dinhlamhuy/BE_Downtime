@@ -184,10 +184,11 @@ exports.getMechalist = async (req, res) => {
   // if (fromDate && toDate) {
   //   condition += ` AND CONVERT(DATE,DT_task_detail.date_user_request) BETWEEN CONVERT(DATE,'${fromDate}') AND CONVERT(DATE,'${toDate}')  `;
   // }
-  if (user_name && factory != "LVL") {
+  if (user_name && (factory == "LYM"  ||  factory == "LYV")    ) {
     condition += `  and DT_task_detail.id_owner_mechanic = '${user_name}' `;
   }
-  if(factory!=='LYM'){
+
+  if(factory !== 'LYM'){
     condition+= ' and   DT_task_detail.date_asign_task > DT_task_detail.date_user_request '
   }
   const getList = {
@@ -223,66 +224,7 @@ exports.getListStatusMechanic = async (req, res) => {
   });
 
   let condition = ` 1=1 `;
-  if (factory == "LVL") {
-    if (floor && lean == "TD") {
-      // const check = floor.search(",");
-      // // console.log("object", check);
-      // if (check > 0) {
-      //   arr = floor.split(",");
-      //   // console.log("object", arr);
-      //   const check1 = floor.replace(/,/g, "");
-      //   condition += ` and  A.floor like '[${check1}]%'`;
-      // } else {
-      //   condition += ` and  A.floor like '${floor}%'`;
-      // }
-      // condition += ` and ',${floor},' like '%,'+A.floor+',%'  `;
-    }
-    if (floor && lean == "TM") {
-      // const check = floor.search(",");
-      // // console.log("object", check);
-      // if (check > 0) {
-      //   arr = floor.split(",");
-      //   // console.log("TM", arr);
-      //   const check0 = floor.replace(/,/g, "");
-      //   const check1 = floor.replace(/[A-Z]/g, "");
-      //   const check2 = check1.replace(/,/g, "");
-      //   // console.log("TM", check1);
-      //   condition += ` and  A.floor like '[${check0}]%' and  A.floor like '%[${check2}]' `;
-      // } else {
-      //   condition += ` and  A.floor like '${floor}%'`;
-      // }
-      // condition += ` and ',${floor},' like '%,'+A.floor+',%'  `;
-    }
-  } else {
-    if (floor && lean == "TD") {
-      // const check = floor.search(",");
-      // // console.log("object", check);
-      // if (check > 0) {
-      //   // arr = floor.split(",");
-      //   // // console.log("object", arr);
-      //   // const check1 = floor.replace(/,/g, "");
-      //   condition += ` and  ','+A.floor+',' like '%,${floor},%'`;
-      // } else {
-      // }
-      // condition += ` and ',${floor},' like '%,'+A.floor+',%'  `;
-    }
-    if (floor && lean == "TM" && permission != 0) {
-      // const check = floor.search(",");
-      // // console.log("object", check);
-      // if (check > 0) {
-      //   arr = floor.split(",");
-      //   // console.log("TM", arr);
-      //   const check0 = floor.replace(/,/g, "");
-      //   const check1 = floor.replace(/[A-Z]/g, "");
-      //   const check2 = check1.replace(/,/g, "");
-      //   // console.log("TM", check1);
-      //   condition += ` and  A.floor like '[${check0}]%' and  A.floor like '%[${check2}]' `;
-      // } else {
-      //   condition += ` and  A.floor like '${floor}%'`;
-      // }
-      // condition += ` and ',${floor},' like '%,'+A.floor+',%'  `;
-    }
-  }
+
   if (factory) {
     condition += `  AND A.factory = '${factory}' `;
   }
@@ -297,13 +239,7 @@ exports.getListStatusMechanic = async (req, res) => {
   if (lean) {
     condition += `  AND   A.lean = '${lean}' `;
   }
-  // const getList = {
-  //   floor: floor,
-  //   factory: factory,
-  //   user_name: position,
-  // };
-  // console.log(getList);
-  // const mechanic = await userModel.getUser(task.id_user_request);
+
   const list = await taskModel.getListStatus({ condition, permission });
 
   if (factory) {
@@ -905,7 +841,7 @@ exports.ownerAsignTask = async (req, res) => {
     // }
 
     var io = req.app.get("socketio");
-    if (factory === "LVL") {
+    if (factory === "LVL" || factory === "LHG" || factory === "LYV") {
       let condition = ` 1=1 AND permission =1`;
       if (lean) {
         condition += ` and lean = '${lean}' `;
@@ -958,7 +894,7 @@ exports.ownerAsignTask = async (req, res) => {
     }
 
     io.emit(`${usermechanic}`, "owner asignTask");
-    console.log(usermechanic);
+    // console.log(usermechanic);
     io.emit(`${getUserreq.id_user_request}`, "owner asignTask");
 
     let content = ChangeLng(
@@ -992,6 +928,7 @@ exports.ownerAsignTask = async (req, res) => {
     var current = new Date().getTime();
     var convert1 = new Date(current);
     var two_minutes_from_now = new Date().getTime() + 360000;
+
 
     var convert = new Date(two_minutes_from_now);
     // var ten_minutes_from_now = new Date().getTime() + 360000;
@@ -1225,14 +1162,14 @@ exports.mechanicAccept = async (req, res) => {
     }
   } else if (req.body.status == 5) {
     const checkreject = await taskModel.getCheckReject(task.id, usermechanic);
-   
+
     if (checkreject.total == 0) {
       const infoReject = {
         id_task_detail: task.id,
         id_machine: idmachine,
         id_user_mechanic: usermechanic,
       };
-  
+
       const createreject = await taskModel.getCreateReject(infoReject);
     } else {
       const updateinf = {
@@ -1321,7 +1258,7 @@ exports.mechanicAccept = async (req, res) => {
         .catch((error) => {
           // console.error("Error emitting events:", error);
         });
-    } else if (factory === "LVL") {
+    } else if (factory === "LVL" || factory === "LHG") {
       io.emit(`${usermechanic}`, "continues");
 
       const promises = owner.map((item) => {
@@ -1792,7 +1729,7 @@ checkMechanicok_Huii = async (
         id_machine: idmachine,
         receive_date:new Date(task.date_asign_task)
       };
-      console.log(no_response) 
+      console.log(no_response)
       const log_noresponse= await taskModel.createDT_NoResponse(no_response);
       if (owner != null) {
         const updateTask = {
@@ -1801,12 +1738,13 @@ checkMechanicok_Huii = async (
           idmachine: idmachine,
           factory: factory,
           fixer: fixer,
-          owner: owner[0].user_name,
+          owner: task.id_owner_mechanic
         };
+        // || owner[0].user_name
 
         const declineTask = await taskModel.cfmDeclineTask(updateTask);
         io.emit(`${lean_req.user_name}`, "assignagain" + Math.random());
-        if (factory === "LVL") {
+        if (factory === "LVL" || factory === "LHG" || factory === "LYV") {
           const promises = owner.map((item) => {
             return new Promise((resolve) => {
               io.emit(`${item.user_name}`, "req" + Math.random());
@@ -2050,7 +1988,7 @@ exports.callSupport = async (req, res) => {
   const remark = req.body.remark;
   const support_detail = req.body.support_detail;
 
- 
+
   // return ;
   const getask0 = {
     user_machine: user_machine,
@@ -2333,7 +2271,7 @@ exports.getMachineRepairLine = async (req, res) => {
 };
 exports.getTaskRecordHistory = async (req, res) => {
   const id_task = req.body.id_task;
-  console.log(id_task)
+  // console.log(id_task)
 
   const history = await taskModel.getDetailProcessTask(id_task);
 

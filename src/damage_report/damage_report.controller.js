@@ -448,7 +448,7 @@ exports.callMechanic = async (req, res) => {
         } else {
           var io = req.app.get("socketio");
           io.emit(`${id_user_request}`, "req" + Math.random());
-          if (factory === "LVL") {
+          if (factory === "LVL" || factory === "LHG" || factory==="LYV") {
             const promises = owner.map((item) => {
               return new Promise((resolve) => {
                 io.emit(`${item.user_name}`, "req" + Math.random());
@@ -863,7 +863,7 @@ checkMechaniHuii = async (
       if (owner != null) {
         io.emit(`${id_user_mechanic}`, "req" + Math.random());
 
-        if (factory === "LVL") {
+        if (factory === "LVL" || factory === "LHG" || factory === "LYV") {
           const promises = owner.map((item) => {
             return new Promise((resolve) => {
               io.emit(`${item.user_name}`, "req" + Math.random());
